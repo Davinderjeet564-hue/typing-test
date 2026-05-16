@@ -1,0 +1,40 @@
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  transform: none; /* Remove the translateX */
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.settings {
+  transform: none; /* Remove the translateY */
+}
+
+.settings-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.settings-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}

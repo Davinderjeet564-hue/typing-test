@@ -5,22 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Test</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="topbar.css" />
   </head>
   <body>
     <main>
-      <h1 class="title">Typing Test</h1>
-      <p class="description">Test your typing speed and accuracy</p>
+      <div class="top-bar">
+        <section class="header">
+          <h1 class="title">Typing Test</h1>
+          <p class="description">Test your typing speed and accuracy</p>
+        </section>
+
+        <section class="settings">
+          <div class="settings-container">
+            <img src="settings.png" alt="Settings" class="settings-icon">
+            <h1>Settings</h1>
+          </div>
+
+          <div class="sidebar">
+            <!-- TODO: Add settings icon here -->
+            <!--
+            <label for="duration">Choose time:</label>
+            <select id="duration" name="duration">
+            <option value="30">30 Minutes</option>
+            <option value="60">1 Hour</option>
+            <option value="90">1 Hour 30 Minutes</option>
+            <option value="120">2 Hours</option>
+          </select>
+          -->
+          </div>
+
+        </section>
+      </div>
+
       <section class="typing-container">
         <div class="words-to-type" id="words-to-type">
           <div class="blinking-cursor"></div>
         </div>
       </section>
 
-    <section  class="stats">
-      <p class="timer" id="timer"></p>
-      <p class="wpm" id="wpm"></p>
-      <p class="accuracy" id="accuracy"></p>
-    </section>
+      <section class="stats">
+        <p class="timer" id="timer"></p>
+        <p class="wpm" id="wpm"></p>
+        <p class="accuracy" id="accuracy"></p>
+      </section>
     </main>
     <script type="module" src="app.js"></script>
   </body>

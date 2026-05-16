@@ -1,5 +1,11 @@
+// Global variables
 const wordsToType = document.getElementById('words-to-type');
 const cursor = document.querySelector('.blinking-cursor');
+const data = await loadData();
+// Build letter spans — one <span> per character (letters + spaces between words)
+const letters = [];
+let currentIndex = 0;
+
 
 async function loadData() {
   try {
@@ -12,10 +18,6 @@ async function loadData() {
   }
 }
 
-const data = await loadData();
-
-// Build letter spans — one <span> per character (letters + spaces between words)
-const letters = [];
 
 function makeLettersSpans(word, wordIndex){
   // Create a span per letter in the word
@@ -39,7 +41,6 @@ function makeLettersSpans(word, wordIndex){
 
 data.forEach((word, wordIndex) => makeLettersSpans(word, wordIndex));
 
-let currentIndex = 0;
 
 // Position the cursor before a given letter span
 function moveCursorTo(index) {

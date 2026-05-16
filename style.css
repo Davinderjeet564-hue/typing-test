@@ -15,22 +15,12 @@ main {
   align-items: center;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
 }
 
-.description {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
-
-.title {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
 
 .typing-container {
-  position: relative;
+  margin-top: 2rem;
 }
 
 .words-to-type {
