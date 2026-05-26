@@ -7,7 +7,7 @@
 }
 
 .header {
-  transform: none; /* Remove the translateX */
+  transform: none; 
 }
 
 .description {
@@ -23,11 +23,7 @@
   margin-top: 1rem;
 }
 
-.settings {
-  transform: none; /* Remove the translateY */
-}
-
-.settings-container {
+.settings-button {
   display: flex;
   align-items: center;
   gap: 1rem;
