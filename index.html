@@ -1,12 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Test</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="typing-container.css" />
     <link rel="stylesheet" href="topbar.css" />
     <link rel="stylesheet" href="settings-sidebar.css" />
+    <link rel="stylesheet" href="stats.css" />
+    <link rel="stylesheet" href="time-display.css" />
   </head>
   <body>
     <main>
@@ -49,10 +52,14 @@
         </div>
       </section>
 
-      <section class="stats">
-        <p class="timer" id="timer"></p>
-        <p class="wpm" id="wpm"></p>
-        <p class="accuracy" id="accuracy"></p>
+      <section class="time-remaining">
+        <p class="time-remaining-text" id="time-remaining-text">00:30</p>
+      </section>
+
+      <section class="test-stats">
+        <p class="test-time" id="test-time"></p>
+        <p class="wpm-count" id="wpm-count"></p>
+        <p class="accuracy-count" id="accuracy-count"></p>
       </section>
     </main>
     <script type="module" src="app.js" defer></script>

@@ -1,0 +1,10 @@
+.time-remaining {
+    position: fixed;
+    left: 10px;
+    bottom: 20px;
+}
+
+.time-remaining-text {
+    font-size: 1.2rem;
+    color: #333;
+}
