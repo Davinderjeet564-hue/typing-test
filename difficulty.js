@@ -1,5 +1,5 @@
 const STORAGE_KEY = "typing-test-difficulty";
-const DEFAULT_DIFFICULTY = "medium";
+const DEFAULT_DIFFICULTY = "easy";
 
 export const DIFFICULTY_LEVELS = {
   easy: {

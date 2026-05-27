@@ -5,10 +5,10 @@
     align-items: center;
     margin-top: 2rem;
     font-size: 1.2rem;
-    color: #333;
+    color: var(--text-color);
 }
 
 .timer {
     font-size: 1.2rem;
-    color: #333;
+    color: var(--text-color);
 }
