@@ -3,53 +3,135 @@
   transform: none;
 }
 
+/* Sidebar Backdrop overlay */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sidebar container */
 .settings-sidebar {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 320px;
   height: 100vh;
   background: var(--sidebar-bg);
   border-left: 1px solid var(--border-color);
-  padding: 2rem;
-  box-shadow: -2px 0 4px var(--sidebar-shadow);
+  padding: 2.5rem 2rem;
+  box-shadow: -10px 0 30px var(--sidebar-shadow);
   z-index: 1000;
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
 }
 
 .settings-sidebar.active {
   transform: translateX(0);
 }
 
-.close-button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+/* Sidebar Header */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1.5px solid var(--border-color);
+  padding-bottom: 1rem;
 }
 
+.sidebar-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-color);
+}
+
+/* Close Button */
+.close-button {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  font-size: 1.5rem;
+  line-height: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.3s ease, border-color 0.2s;
+  padding-bottom: 0.2rem; /* visually center the &times; */
+}
+
+.close-button:hover {
+  background-color: var(--border-color);
+  transform: rotate(90deg);
+}
+
+/* Settings Form Content */
 .settings-content {
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .settings-content label {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--letter-color);
+  margin-bottom: -0.5rem;
 }
 
+/* Custom Styled Select Dropdown */
 .settings-content select {
-  font-size: 1.2rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
   width: 100%;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  
+  /* Modern Chevron Icon */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 1.1rem;
+}
+
+.settings-content select:hover:not(:disabled) {
+  border-color: var(--text-color);
+}
+
+.settings-content select:focus:not(:disabled) {
+  border-color: var(--cursor-color);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
 
 .settings-content select:disabled {
