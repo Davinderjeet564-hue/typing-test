@@ -258,6 +258,25 @@ class TypingTest {
     }
     this.timeRemaining = 0;
     this.updateTimerDisplay();
+    // Calculate statistics
+    const totalTyped = letters.filter(l => l.classList.contains("typed") || l.classList.contains("incorrect")).length;
+    const correctTyped = letters.filter(l => l.classList.contains("typed")).length;
+    const accuracy = totalTyped === 0 ? 0 : Math.round((correctTyped / totalTyped) * 100);
+    const minutes = this.getDurationSeconds() / 60;
+    const wpm = minutes > 0 ? Math.round((correctTyped / 5) / minutes) : 0;
+
+    // Update stats UI
+    const testTimeEl = document.getElementById("test-time");
+    const wpmEl = document.getElementById("wpm-count");
+    const accuracyEl = document.getElementById("accuracy-count");
+    if (testTimeEl) testTimeEl.textContent = `Time: ${this.formatTime(this.getDurationSeconds())}`;
+    if (wpmEl) wpmEl.textContent = `WPM: ${wpm}`;
+    if (accuracyEl) accuracyEl.textContent = `Accuracy: ${accuracy}%`;
+
+    // Hide typing container and show stats
+    if (typingContainer) typingContainer.style.display = "none";
+    const statsSection = document.querySelector('.test-stats');
+    if (statsSection) statsSection.classList.add('active');
   }
 }
 
@@ -265,3 +284,24 @@ loadSavedDifficulty();
 const typingTest = new TypingTest([]);
 await typingTest.reloadWords(getSelectedDifficulty());
 typingTest.init();
+
+// Retake button logic
+const retakeBtn = document.getElementById('retake-button');
+if (retakeBtn) {
+  retakeBtn.addEventListener('click', async () => {
+    // Reset UI
+    const statsSection = document.querySelector('.test-stats');
+    if (statsSection) statsSection.classList.remove('active');
+    if (typingContainer) typingContainer.style.display = '';
+
+    // Reset test state
+    typingTest.testStarted = false;
+    typingTest.testEnded = false;
+    typingTest.timeRemaining = 0;
+    typingTest.updateTimerDisplay();
+    typingTest.clearLetters();
+    await typingTest.reloadWords(getSelectedDifficulty());
+    // Re‑initialize listeners
+    typingTest.init();
+  });
+}

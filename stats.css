@@ -1,11 +1,108 @@
+/* Hide test statistics by default; show when .active class is added */
 .test-stats {
+    display: none;
+}
+
+.test-stats.active {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .test-stats.active {
+    background-color: rgba(255, 255, 255, 0.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Individual stat items */
+.test-stats p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2rem;
-    font-size: 1.2rem;
-    color: var(--text-color);
+    padding: 0.5rem 0;
+}
+
+.test-time {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.wpm-count,
+.accuracy-count {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.wpm-count::before {
+    content: "WPM: ";
+    font-weight: 400;
+    opacity: 0.7;
+    margin-right: 0.5rem;
+}
+
+.accuracy-count::before {
+    content: "Accuracy: ";
+    font-weight: 400;
+    opacity: 0.7;
+    margin-right: 0.5rem;
+}
+
+.test-time::before {
+    content: "Test Duration: ";
+    font-weight: 400;
+    opacity: 0.7;
+    margin-right: 0.5rem;
+}
+
+/* Retake button styling */
+.retake-button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .retake-button {
+    background-color: #e0e0e0;
+    color: #1a1a1a;
+}
+
+[data-theme="blue"] .retake-button {
+    background-color: #003366;
+    color: white;
+}
+
+.retake-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .retake-button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.retake-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .timer {
