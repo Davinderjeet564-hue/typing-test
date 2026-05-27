@@ -4,7 +4,7 @@ const url = "https://random-words-api.kushcreates.com/api";
 
 async function getWords() {
   try {
-    const response = await fetch(`${url}?language=en&category=wordle&length=5&words=100`);
+    const response = await fetch(`${url}?language=en&category=wordle&length=5&words=300`);
     if (!response.ok) throw new Error("Failed to fetch words");
     const data = await response.json();
     return data.map(item => item.word);

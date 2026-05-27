@@ -2,6 +2,7 @@ import getWords from "./random-words.js";
 
 // Global variables
 const wordsToType = document.getElementById("words-to-type");
+const typingContainer = document.querySelector(".typing-container");
 const cursor = document.querySelector(".blinking-cursor");
 const letters = [];
 let currentIndex = 0;
@@ -17,6 +18,23 @@ class TypingTest {
     this.testStarted = false;
     this.testEnded = false;
     this.timeRemainingInterval = null;
+    this.lineTops = [];
+    this.firstVisibleLineIndex = 0;
+  }
+
+  updateLineTops() {
+    const tops = letters.map(span => span.offsetTop);
+    this.lineTops = [...new Set(tops)].sort((a, b) => a - b);
+  }
+
+  clampContainerHeight() {
+    const N = 4;
+    if (this.lineTops.length < 2) return;
+    // Calculate pixel-accurate line height from actual rendered positions
+    const lineHeight = this.lineTops[1] - this.lineTops[0];
+    const lastVisibleLine = this.lineTops[Math.min(N - 1, this.lineTops.length - 1)];
+    // Container height = top of Nth line + one line height (clips right at bottom of line N)
+    typingContainer.style.height = (lastVisibleLine + lineHeight) + "px";
   }
 
   getDurationSeconds() {
@@ -79,24 +97,51 @@ class TypingTest {
   moveCursorTo(index) {
     if (letters.length === 0) return;
 
+    if (!this.lineTops || this.lineTops.length === 0) {
+      this.updateLineTops();
+    }
+
     const containerRect = wordsToType.getBoundingClientRect();
+    let letterRect;
+    let currentLetter;
 
     if (index < letters.length) {
-      const letterRect = letters[index].getBoundingClientRect();
+      currentLetter = letters[index];
+      letterRect = currentLetter.getBoundingClientRect();
       cursor.style.left = letterRect.left - containerRect.left + "px";
       cursor.style.top = letterRect.top - containerRect.top + "px";
       cursor.style.height = letterRect.height + "px";
     } else {
-      const lastRect = letters[letters.length - 1].getBoundingClientRect();
+      currentLetter = letters[letters.length - 1];
+      const lastRect = currentLetter.getBoundingClientRect();
       cursor.style.left = lastRect.right - containerRect.left + "px";
       cursor.style.top = lastRect.top - containerRect.top + "px";
       cursor.style.height = lastRect.height + "px";
+      letterRect = lastRect;
+    }
+
+    // Handle line-by-line scrolling using offsetTop
+    const currentTop = currentLetter.offsetTop;
+    const L = this.lineTops.indexOf(currentTop);
+
+    if (L !== -1) {
+      const N = 4; // Number of visible lines
+      if (L >= this.firstVisibleLineIndex + N) {
+        this.firstVisibleLineIndex = L - N + 1;
+      } else if (L < this.firstVisibleLineIndex) {
+        this.firstVisibleLineIndex = L;
+      }
+
+      const offset = this.lineTops[this.firstVisibleLineIndex] - this.lineTops[0];
+      wordsToType.style.transform = `translateY(-${offset}px)`;
     }
   }
 
   handleKeyPress(e) {
     if (this.testEnded) return;
     if (e.ctrlKey || e.altKey || e.metaKey) return;
+    // Block any selection keys (shift + arrow, etc.)
+    if (e.shiftKey) return;
 
     if (e.key === "Backspace") {
       if (currentIndex > 0) {
@@ -114,11 +159,18 @@ class TypingTest {
       this.beginTimer();
     }
 
-    const expected = letters[currentIndex].textContent;
-    if (e.key === expected) {
-      letters[currentIndex].classList.add("typed");
+    const currentLetter = letters[currentIndex];
+    const expected = currentLetter.textContent;
+    const isSpace = currentLetter.classList.contains("space");
+
+    if (isSpace) {
+      // On a space: only advance on actual space key, silently skip on any other key
+      if (e.key !== " ") return;
+      currentLetter.classList.add("typed");
+    } else if (e.key === expected) {
+      currentLetter.classList.add("typed");
     } else {
-      letters[currentIndex].classList.add("incorrect");
+      currentLetter.classList.add("incorrect");
     }
 
     currentIndex++;
@@ -130,6 +182,17 @@ class TypingTest {
     duration.addEventListener("change", () => this.onDurationChange());
     this.keydownHandler = (e) => this.handleKeyPress(e);
     document.addEventListener("keydown", this.keydownHandler);
+
+    this.resizeHandler = () => {
+      this.updateLineTops();
+      this.clampContainerHeight();
+      this.moveCursorTo(currentIndex);
+    };
+    window.addEventListener("resize", this.resizeHandler);
+
+    // Globally prevent any text selection via mouse or keyboard
+    this.selectstartHandler = (e) => e.preventDefault();
+    document.addEventListener("selectstart", this.selectstartHandler);
   }
 
   endTest() {
@@ -137,15 +200,23 @@ class TypingTest {
     this.testEnded = true;
     clearInterval(this.timeRemainingInterval);
     document.removeEventListener("keydown", this.keydownHandler);
+    if (this.resizeHandler) {
+      window.removeEventListener("resize", this.resizeHandler);
+    }
+    if (this.selectstartHandler) {
+      document.removeEventListener("selectstart", this.selectstartHandler);
+    }
     this.timeRemaining = 0;
     this.updateTimerDisplay();
   }
 }
 
 const data = await getWords();
-console.log(data)
 const typingTest = new TypingTest(data);
 
 data.forEach((word, wordIndex) => typingTest.makeLettersSpans(word, wordIndex));
+// After text is rendered, calculate actual line positions and clamp height
+typingTest.updateLineTops();
+typingTest.clampContainerHeight();
 typingTest.moveCursorTo(0);
 typingTest.init();

@@ -1,14 +1,30 @@
 
 .typing-container {
     margin-top: 4rem;
+    width: 700px;
+    /* padding-top (1rem) + 4 lines × (1.8rem × 1.8 line-height) = 13.96rem */
+    height: 13.96rem;
+    position: relative;
+    overflow: hidden;
+    /* hard pixel clip — catches text-decoration bleed that overflow:hidden misses */
+    clip-path: inset(0);
+    user-select: none;
+    -webkit-user-select: none;
   }
   
 .words-to-type {
-    font-size: 1.2rem;
     color: gray;
     position: relative;
     line-height: 1.8;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    padding: 1rem 1rem 0 1rem; /* no bottom padding — line 5+ must not bleed into view */
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.15s ease-out;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+    pointer-events: none;
 }
 
 .words-to-type:focus {
