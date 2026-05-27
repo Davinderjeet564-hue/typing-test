@@ -1,9 +1,9 @@
 
 .typing-container {
-    margin-top: 4rem;
+    margin-top: 5rem;
     width: 700px;
-    /* padding-top (1rem) + 4 lines × (1.8rem × 1.8 line-height) = 13.96rem */
-    height: 13.96rem;
+    /* 4 lines × (1.8rem × 1.8 line-height) = 12.96rem */
+    height: 12.96rem;
     position: relative;
     overflow: hidden;
     /* hard pixel clip — catches text-decoration bleed that overflow:hidden misses */
@@ -17,7 +17,7 @@
     position: relative;
     line-height: 1.8;
     font-size: 1.8rem;
-    padding: 1rem 1rem 0 1rem; /* no bottom padding — line 5+ must not bleed into view */
+    padding: 0 1rem; /* no top/bottom padding to ensure clean line-by-line clipping */
     overflow: hidden;
     transform: translateY(0);
     transition: transform 0.15s ease-out;
