@@ -1,4 +1,9 @@
 import getWords from "./random-words.js";
+import {
+  getSelectedDifficulty,
+  loadSavedDifficulty,
+  saveDifficulty,
+} from "./difficulty.js";
 
 // Global variables
 const wordsToType = document.getElementById("words-to-type");
@@ -7,6 +12,7 @@ const cursor = document.querySelector(".blinking-cursor");
 const letters = [];
 let currentIndex = 0;
 const duration = document.querySelector("#duration");
+const difficultyChooser = document.querySelector("#difficulty-chooser");
 const timeRemainingText = document.querySelector("#time-remaining-text");
 
 
@@ -54,15 +60,54 @@ class TypingTest {
     this.timeRemainingText.textContent = this.formatTime(seconds);
   }
 
+  updateSettingsControls() {
+    const locked = this.testStarted && !this.testEnded;
+    if (difficultyChooser) difficultyChooser.disabled = locked;
+  }
+
   onDurationChange() {
     if (!this.testStarted && !this.testEnded) {
       this.updateTimerDisplay();
     }
   }
 
+  onDifficultyChange() {
+    if (this.testStarted || this.testEnded) return;
+    saveDifficulty(difficultyChooser.value);
+    this.reloadWords(difficultyChooser.value);
+  }
+
+  clearLetters() {
+    letters.length = 0;
+    currentIndex = 0;
+    this.firstVisibleLineIndex = 0;
+    this.lineTops = [];
+    wordsToType.style.transform = "";
+    wordsToType.querySelectorAll(".letter").forEach((el) => el.remove());
+  }
+
+  async reloadWords(difficulty) {
+    if (this.testStarted || this.testEnded) return;
+
+    wordsToType.classList.add("is-loading");
+    try {
+      const words = await getWords(difficulty);
+      this.clearLetters();
+      this.data = words;
+      words.forEach((word, wordIndex) => this.makeLettersSpans(word, wordIndex));
+      this.updateLineTops();
+      this.clampContainerHeight();
+      this.moveCursorTo(0);
+      this.updateTimerDisplay();
+    } finally {
+      wordsToType.classList.remove("is-loading");
+    }
+  }
+
   beginTimer() {
     if (this.testStarted || this.testEnded) return;
     this.testStarted = true;
+    this.updateSettingsControls();
     this.timeRemaining = this.getDurationSeconds();
     this.updateTimerDisplay();
     this.timeRemainingInterval = setInterval(() => this.tick(), 1000);
@@ -179,7 +224,11 @@ class TypingTest {
 
   init() {
     this.updateTimerDisplay();
+    this.updateSettingsControls();
     duration.addEventListener("change", () => this.onDurationChange());
+    if (difficultyChooser) {
+      difficultyChooser.addEventListener("change", () => this.onDifficultyChange());
+    }
     this.keydownHandler = (e) => this.handleKeyPress(e);
     document.addEventListener("keydown", this.keydownHandler);
 
@@ -198,6 +247,7 @@ class TypingTest {
   endTest() {
     if (this.testEnded) return;
     this.testEnded = true;
+    this.updateSettingsControls();
     clearInterval(this.timeRemainingInterval);
     document.removeEventListener("keydown", this.keydownHandler);
     if (this.resizeHandler) {
@@ -211,12 +261,7 @@ class TypingTest {
   }
 }
 
-const data = await getWords();
-const typingTest = new TypingTest(data);
-
-data.forEach((word, wordIndex) => typingTest.makeLettersSpans(word, wordIndex));
-// After text is rendered, calculate actual line positions and clamp height
-typingTest.updateLineTops();
-typingTest.clampContainerHeight();
-typingTest.moveCursorTo(0);
+loadSavedDifficulty();
+const typingTest = new TypingTest([]);
+await typingTest.reloadWords(getSelectedDifficulty());
 typingTest.init();

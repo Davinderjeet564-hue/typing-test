@@ -20,11 +20,16 @@
     padding: 0 1rem; /* no top/bottom padding to ensure clean line-by-line clipping */
     overflow: hidden;
     transform: translateY(0);
-    transition: transform 0.15s ease-out;
+    transition: transform 0.15s ease-out, opacity 0.2s ease;
+    opacity: 1;
     user-select: none;
     -webkit-user-select: none;
     cursor: default;
     pointer-events: none;
+}
+
+.words-to-type.is-loading {
+    opacity: 0.4;
 }
 
 .words-to-type:focus {
