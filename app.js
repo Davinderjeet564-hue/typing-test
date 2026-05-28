@@ -184,6 +184,8 @@ class TypingTest {
 
   handleKeyPress(e) {
     if (this.testEnded) return;
+    const settingsSidebar = document.getElementById("settings-sidebar");
+    if (settingsSidebar?.classList.contains("active")) return;
     if (e.ctrlKey || e.altKey || e.metaKey) return;
     // Block any selection keys (shift + arrow, etc.)
     if (e.shiftKey) return;
@@ -222,12 +224,33 @@ class TypingTest {
     this.moveCursorTo(currentIndex);
   }
 
+  detachListeners() {
+    if (this.keydownHandler) {
+      document.removeEventListener("keydown", this.keydownHandler);
+    }
+    if (this.resizeHandler) {
+      window.removeEventListener("resize", this.resizeHandler);
+    }
+    if (this.selectstartHandler) {
+      document.removeEventListener("selectstart", this.selectstartHandler);
+    }
+    if (this.durationChangeHandler && duration) {
+      duration.removeEventListener("change", this.durationChangeHandler);
+    }
+    if (this.difficultyChangeHandler && difficultyChooser) {
+      difficultyChooser.removeEventListener("change", this.difficultyChangeHandler);
+    }
+  }
+
   init() {
+    this.detachListeners();
     this.updateTimerDisplay();
     this.updateSettingsControls();
-    duration.addEventListener("change", () => this.onDurationChange());
+    this.durationChangeHandler = () => this.onDurationChange();
+    duration.addEventListener("change", this.durationChangeHandler);
     if (difficultyChooser) {
-      difficultyChooser.addEventListener("change", () => this.onDifficultyChange());
+      this.difficultyChangeHandler = () => this.onDifficultyChange();
+      difficultyChooser.addEventListener("change", this.difficultyChangeHandler);
     }
     this.keydownHandler = (e) => this.handleKeyPress(e);
     document.addEventListener("keydown", this.keydownHandler);
@@ -249,13 +272,7 @@ class TypingTest {
     this.testEnded = true;
     this.updateSettingsControls();
     clearInterval(this.timeRemainingInterval);
-    document.removeEventListener("keydown", this.keydownHandler);
-    if (this.resizeHandler) {
-      window.removeEventListener("resize", this.resizeHandler);
-    }
-    if (this.selectstartHandler) {
-      document.removeEventListener("selectstart", this.selectstartHandler);
-    }
+    this.detachListeners();
     this.timeRemaining = 0;
     this.updateTimerDisplay();
     // Calculate statistics
