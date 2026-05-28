@@ -269,9 +269,9 @@ class TypingTest {
     const testTimeEl = document.getElementById("test-time");
     const wpmEl = document.getElementById("wpm-count");
     const accuracyEl = document.getElementById("accuracy-count");
-    if (testTimeEl) testTimeEl.textContent = `Time: ${this.formatTime(this.getDurationSeconds())}`;
-    if (wpmEl) wpmEl.textContent = `WPM: ${wpm}`;
-    if (accuracyEl) accuracyEl.textContent = `Accuracy: ${accuracy}%`;
+    if (testTimeEl) testTimeEl.textContent = this.formatTime(this.getDurationSeconds());
+    if (wpmEl) wpmEl.textContent = wpm;
+    if (accuracyEl) accuracyEl.textContent = `${accuracy}%`;
 
     // Hide typing container and show stats
     if (typingContainer) typingContainer.style.display = "none";
@@ -281,7 +281,7 @@ class TypingTest {
 }
 
 loadSavedDifficulty();
-const typingTest = new TypingTest([]);
+const typingTest = new TypingTest([]); /* Initializing the typing test object*/
 await typingTest.reloadWords(getSelectedDifficulty());
 typingTest.init();
 

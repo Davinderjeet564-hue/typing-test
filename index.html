@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="typing-container.css" />
     <link rel="stylesheet" href="topbar.css" />
@@ -58,20 +61,29 @@
         </div>
       </div>
 
+      <section class="time-remaining">
+        <p class="time-remaining-text" id="time-remaining-text">00:30</p>
+      </section>
+
       <section class="typing-container">
         <div class="words-to-type" id="words-to-type">
           <div class="blinking-cursor"></div>
         </div>
       </section>
 
-      <section class="time-remaining">
-        <p class="time-remaining-text" id="time-remaining-text">00:30</p>
-      </section>
-
-      <section class="test-stats">
-        <p class="test-time" id="test-time"></p>
-        <p class="wpm-count" id="wpm-count"></p>
-        <p class="accuracy-count" id="accuracy-count"></p>
+      <section class="test-stats" id="test-stats">
+        <div class="stat-item">
+          <label class="stat-label">Test Duration</label>
+          <span class="test-time" id="test-time"></span>
+        </div>
+        <div class="stat-item">
+          <label class="stat-label">WPM</label>
+          <span class="wpm-count" id="wpm-count"></span>
+        </div>
+        <div class="stat-item">
+          <label class="stat-label">Accuracy</label>
+          <span class="accuracy-count" id="accuracy-count"></span>
+        </div>
         <button class="retake-button" id="retake-button">Retake Test</button>
       </section>
     </main>
