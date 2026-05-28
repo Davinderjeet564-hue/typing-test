@@ -92,12 +92,11 @@
     letter-spacing: 0.5px;
 }
 
-[data-theme="dark"] .retake-button {
-    background-color: var(--accent-color);
-    color: white;
-}
-
-[data-theme="blue"] .retake-button {
+[data-theme="dark"] .retake-button,
+[data-theme="blue"] .retake-button,
+[data-theme="forest"] .retake-button,
+[data-theme="cyberpunk"] .retake-button,
+[data-theme="sepia"] .retake-button {
     background-color: var(--accent-color);
     color: white;
 }
