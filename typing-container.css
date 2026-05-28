@@ -1,6 +1,6 @@
 
 .typing-container {
-    margin-top: 0.5rem;
+    margin-top: 2rem;
     width: 100%;
     max-width: 700px;
     /* 4 lines × (1.8rem × 1.8 line-height) = 12.96rem */
@@ -25,14 +25,14 @@
 
 @media (max-width: 768px) {
     .typing-container {
-        margin-top: 0.5rem;
+        margin-top: 1.5rem;
         height: 10.8rem;
     }
 }
 
 @media (max-width: 480px) {
     .typing-container {
-        margin-top: 0.5rem;
+        margin-top: 1.25rem;
         height: 9rem;
     }
 }
